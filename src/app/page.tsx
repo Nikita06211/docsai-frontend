@@ -1,9 +1,15 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function Home() {
   const [url, setUrl] = useState("https://react.dev");
+  const router = useRouter();
+
+  const handleNavigate = () => {
+    router.push(`/chat?sitemapurl=${encodeURIComponent(url)}`);
+  };
 
   return (
     <main className="min-h-screen bg-black text-green-400 font-mono flex flex-col items-center justify-center p-6">
@@ -41,7 +47,10 @@ export default function Home() {
             />
           </div>
 
-          <button className="mt-6 bg-green-600 text-black px-4 py-2 rounded hover:bg-green-500 text-sm">
+          <button
+            onClick={handleNavigate}
+            className="mt-6 bg-green-600 text-black px-4 py-2 rounded hover:bg-green-500 text-sm"
+          >
             🧠 ./execute --start-chat
           </button>
         </div>
