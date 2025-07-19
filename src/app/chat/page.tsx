@@ -1,18 +1,59 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { SendHorizonal } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { MessageBubble } from "../components/MessageBubble";
 import axios from "axios";
 
-export default function ChatPage() {
+// Type definitions
+interface Source {
+  id: number;
+  url: string;
+}
+
+interface Message {
+  role: "system" | "user";
+  content: string;
+  time: string;
+  sources?: Source[];
+}
+
+// Loading component for Suspense fallback
+function ChatLoading() {
+  return (
+    <main className="min-h-screen bg-black text-green-400 font-mono p-6">
+      <div className="text-center mb-6">
+        <pre className="text-green-300 text-4xl leading-none">
+          {`
+██████╗  ██████╗  ██████╗███████╗     █████╗ ██╗
+██╔══██╗██╔═══██╗██╔════╝██╔════╝    ██╔══██╗██║
+██║  ██║██║   ██║██║     ███████╗    ███████║██║
+██║  ██║██║   ██║██║     ╚════██║    ██╔══██║██║
+██████╔╝╚██████╔╝╚██████╗███████║    ██║  ██║██║
+╚═════╝  ╚═════╝  ╚═════╝╚══════╝    ╚═╝  ╚═╝╚═╝
+        `}
+        </pre>
+        <p className="text-blue-400">user@documentation-assistant</p>
+        <p className="text-green-500 text-sm">$ ./chat-with-docs --loading...</p>
+      </div>
+      <div className="max-w-4xl mx-auto border-4 border-green-300 rounded-md bg-[#0d0d0d]">
+        <div className="flex justify-center items-center p-8">
+          <div className="animate-pulse text-green-400">Initializing chat session...</div>
+        </div>
+      </div>
+    </main>
+  );
+}
+
+// Chat content component that uses useSearchParams
+function ChatContent() {
   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState("");
   const searchParams = useSearchParams();
   const sitemapurl = searchParams.get("sitemapurl") || "https://react.dev/sitemap.xml";
 
-  const [messages, setMessages] = useState([
+  const [messages, setMessages] = useState<Message[]>([
     {
       role: "system",
       content: [
@@ -33,18 +74,18 @@ export default function ChatPage() {
       second: "2-digit",
     });
 
-    const userMessage = { role: "user", content: input, time: `[${time}]` };
+    const userMessage: Message = { role: "user", content: input, time: `[${time}]` };
     setMessages((prev) => [...prev, userMessage]);
     setLoading(true);
 
     try {
       const res = await axios.get(
         `https://cold-star-f7e1.prajjwalbh25.workers.dev/message?siteMapUrl=${encodeURIComponent(
-          sitemapurl!
+          sitemapurl
         )}&query=${encodeURIComponent(input)}`
       );
 
-      const botMessage = {
+      const botMessage: Message = {
         role: "system",
         content: res.data.answer.response || "[ERROR] No message received from docs 🤖",
         time: `[${time}]`,
@@ -52,14 +93,14 @@ export default function ChatPage() {
       };
 
       setMessages((prev) => [...prev, botMessage]);
-    } catch (error) {
+    } catch (_error) {
       setMessages((prev) => [
         ...prev,
         {
           role: "system",
           content: `[ERROR] Something went wrong.`,
           time: `[${time}]`,
-        },
+        } as Message,
       ]);
     }
 
@@ -102,7 +143,11 @@ export default function ChatPage() {
                   <p className="text-green-400 font-semibold">
                     docs-ai<span className="text-gray-400">@system</span>
                   </p>
-                  <MessageBubble role="system" content={msg.content} sources={(msg as any).sources} />
+                  <MessageBubble 
+                    role="system" 
+                    content={msg.content} 
+                    sources={msg.sources} 
+                  />
                   <p className="text-gray-500 text-xs mt-1">{msg.time}</p>
                 </div>
               ) : (
@@ -152,5 +197,13 @@ export default function ChatPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function ChatPage() {
+  return (
+    <Suspense fallback={<ChatLoading />}>
+      <ChatContent />
+    </Suspense>
   );
 }
