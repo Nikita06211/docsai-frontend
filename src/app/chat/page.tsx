@@ -38,15 +38,16 @@ export default function ChatPage() {
 
     try {
       const res = await axios.get(
-        `https://falling-glade-5e06.prajjwalbh25.workers.dev/message?sitemapurl=${encodeURIComponent(
+        `https://cold-star-f7e1.prajjwalbh25.workers.dev/message?siteMapUrl=${encodeURIComponent(
           sitemapurl!
         )}&query=${encodeURIComponent(input)}`
       );
-
+// ?siteMapUrl=https://nextjs.org/sitemap.xml&query=what
       const botMessage = {
         role: "system",
-        content: res.data.answer || "[ERROR] No message received from docs 🤖",
+        content: res.data.answer.response || "[ERROR] No message received from docs 🤖",
         time: `[${time}]`,
+        sources: res.data.sources || []
       };
 
       setMessages((prev) => [...prev, botMessage]);
@@ -100,7 +101,7 @@ export default function ChatPage() {
             <p className="text-green-400 font-semibold">
               docs-ai<span className="text-gray-400">@system</span>
             </p>
-            <MessageBubble role="system" content={msg.content} />
+            <MessageBubble role="system" content={msg.content} sources = {(msg as any).sources} />
             <p className="text-gray-500 text-xs mt-1">{msg.time}</p>
           </div>
         ) : (
