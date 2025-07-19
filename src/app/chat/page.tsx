@@ -3,10 +3,12 @@
 import { useState } from "react";
 import { SendHorizonal } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import {MessageBubble} from "../components/MessageBubble";
+import { MessageBubble } from "../components/MessageBubble";
 import axios from "axios";
 
 export default function ChatPage() {
+  const [loading, setLoading] = useState(false);
+  const [input, setInput] = useState("");
   const searchParams = useSearchParams();
   const sitemapurl = searchParams.get("sitemapurl") || "https://react.dev/sitemap.xml";
 
@@ -22,8 +24,6 @@ export default function ChatPage() {
     },
   ]);
 
-  const [input, setInput] = useState("");
-
   const handleSend = async () => {
     if (!input.trim()) return;
 
@@ -35,6 +35,7 @@ export default function ChatPage() {
 
     const userMessage = { role: "user", content: input, time: `[${time}]` };
     setMessages((prev) => [...prev, userMessage]);
+    setLoading(true);
 
     try {
       const res = await axios.get(
@@ -42,28 +43,29 @@ export default function ChatPage() {
           sitemapurl!
         )}&query=${encodeURIComponent(input)}`
       );
-// ?siteMapUrl=https://nextjs.org/sitemap.xml&query=what
+
       const botMessage = {
         role: "system",
         content: res.data.answer.response || "[ERROR] No message received from docs 🤖",
         time: `[${time}]`,
-        sources: res.data.sources || []
+        sources: res.data.sources || [],
       };
 
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
-      const errorMessage = {
-        role: "system",
-        content: `[ERROR] Something went wrong.`,
-        time: `[${time}]`,
-      };
-      setMessages((prev) => [...prev, errorMessage]);
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "system",
+          content: `[ERROR] Something went wrong.`,
+          time: `[${time}]`,
+        },
+      ]);
     }
 
     setInput("");
+    setLoading(false);
   };
-
-  // console.log("👀 Rendering ChatPage with messages:", messages.map(m => m.content));
 
   return (
     <main className="min-h-screen bg-black text-green-400 font-mono p-6">
@@ -92,50 +94,61 @@ export default function ChatPage() {
           </button>
         </div>
 
-      <div className="p-4 space-y-4 max-h-[60vh] overflow-y-auto scroll-smooth pr-2 scrollbar-thin scrollbar-thumb-cyan-600 scrollbar-track-transparent scrollbar-thumb-rounded-full">
-
-    {messages.map((msg, index) => (
-      <div key={index} className="text-sm">
-        {msg.role === "system" ? (
-          <div className="bg-[#0f0f0f] p-3 border-l-4 border-green-500 rounded">
-            <p className="text-green-400 font-semibold">
-              docs-ai<span className="text-gray-400">@system</span>
-            </p>
-            <MessageBubble role="system" content={msg.content} sources = {(msg as any).sources} />
-            <p className="text-gray-500 text-xs mt-1">{msg.time}</p>
-          </div>
-        ) : (
-          <div className="text-right">
-            <div className="bg-[#0f0f0f] inline-block p-3 border-r-4 border-blue-400 rounded">
-              <p className="text-white font-semibold">
-                you<span className="text-gray-400">@user</span>
-              </p>
-              <MessageBubble role="user" content={msg.content} />
-              <p className="text-gray-400 text-xs mt-1">{msg.time}</p>
+        <div className="p-4 space-y-4 max-h-[60vh] overflow-y-auto scroll-smooth pr-2 scrollbar-thin scrollbar-thumb-cyan-600 scrollbar-track-transparent scrollbar-thumb-rounded-full">
+          {messages.map((msg, index) => (
+            <div key={index} className="text-sm">
+              {msg.role === "system" ? (
+                <div className="bg-[#0f0f0f] p-3 border-l-4 border-green-500 rounded">
+                  <p className="text-green-400 font-semibold">
+                    docs-ai<span className="text-gray-400">@system</span>
+                  </p>
+                  <MessageBubble role="system" content={msg.content} sources={(msg as any).sources} />
+                  <p className="text-gray-500 text-xs mt-1">{msg.time}</p>
+                </div>
+              ) : (
+                <div className="text-right">
+                  <div className="bg-[#0f0f0f] inline-block p-3 border-r-4 border-blue-400 rounded">
+                    <p className="text-white font-semibold">
+                      you<span className="text-gray-400">@user</span>
+                    </p>
+                    <MessageBubble role="user" content={msg.content} />
+                    <p className="text-gray-400 text-xs mt-1">{msg.time}</p>
+                  </div>
+                </div>
+              )}
             </div>
-          </div>
-        )}
-      </div>
-    ))}
-  </div>
+          ))}
 
-        <div className="flex items-center border-t border-green-500 p-3 gap-2">
-          <span className="text-blue-300">user@docs $</span>
-          <input
-            type="text"
-            placeholder="Enter your query here..."
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSend()}
-            className="flex-1 bg-transparent outline-none text-white placeholder:text-gray-500"
-          />
-          <button
-            onClick={handleSend}
-            className="text-green-500 hover:text-green-300"
-            aria-label="Send"
-          >
-            <SendHorizonal size={18} />
-          </button>
+          {loading && (
+            <div className="flex items-center justify-between font-mono py-2 w-full text-green-300">
+              <span className="text-green-300 text-md">{`>_ `} [PROCESSING] Analyzing Documentation</span>
+              <span className="text-green-300 animate-pulse font-extrabold mr-2 text-md">|||</span>
+            </div>
+          )}
+        </div>
+
+        <div className="border-t border-green-300 bg-[#101725] px-5 py-5">
+          <div className="flex items-center border border-green-400 rounded-xl px-4 py-3 bg-[#0d1117] w-full text-sm text-white">
+            <div className="flex items-center gap-2 flex-grow">
+              <span className="text-cyan-400 font-mono whitespace-nowrap">user@docs $</span>
+              <input
+                type="text"
+                placeholder="Enter your query here..."
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleSend()}
+                className="bg-transparent focus:outline-none text-gray-400 w-full font-mono"
+              />
+            </div>
+
+            <button
+              onClick={handleSend}
+              className="text-green-500 hover:text-green-300 ml-4"
+              aria-label="Send"
+            >
+              <SendHorizonal size={18} />
+            </button>
+          </div>
         </div>
       </div>
     </main>
