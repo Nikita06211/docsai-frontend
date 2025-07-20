@@ -12,26 +12,27 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-black text-green-400 font-mono flex flex-col items-center justify-center p-6">
-      <pre className="text-green-300 text-3xl leading-none text-center whitespace-pre-wrap">
+    <main className="min-h-screen bg-black text-green-400 font-mono flex flex-col items-center justify-center">
+      <div className="flex justify-center w-full overflow-x-auto">
+  <pre className="min-w-max mx-auto text-green-300 text-xs sm:text-base md:text-3xl lg:text-4xl leading-none whitespace-pre">
 {`
-  ██████╗  ██████╗  ██████╗███████╗     █████╗ ██╗
-  ██╔══██╗██╔═══██╗██╔════╝██╔════╝    ██╔══██╗██║
-  ██║  ██║██║   ██║██║     ███████╗    ███████║██║
-  ██║  ██║██║   ██║██║     ╚════██║    ██╔══██║██║
-  ██████╔╝╚██████╔╝╚██████╗███████║    ██║  ██║██║
-  ╚═════╝  ╚═════╝  ╚═════╝╚══════╝    ╚═╝  ╚═╝╚═╝
+██████╗  ██████╗  ██████╗███████╗     █████╗ ██╗
+██╔══██╗██╔═══██╗██╔════╝██╔════╝    ██╔══██╗██║
+██║  ██║██║   ██║██║     ███████╗    ███████║██║
+██║  ██║██║   ██║██║     ╚════██║    ██╔══██║██║
+██████╔╝╚██████╔╝╚██████╗███████║    ██║  ██║██║
+╚═════╝  ╚═════╝  ╚═════╝╚══════╝    ╚═╝  ╚═╝╚═╝
 `}
-      </pre>
+        </pre>
+      </div>
 
       <p className="text-blue-400 text-lg mt-2">user@documentation-assistant</p>
       <p className="text-green-400 text-sm">$ ./chat-with-docs --interactive</p>
 
-      <div className="mt-8 w-full max-w-2xl border border-green-500 rounded-md bg-[#0d0d0d]">
+      <div className="mt-8 w-full max-w-2xl mx-auto border border-green-500 rounded-md bg-[#0d0d0d]">
         <div className="px-4 py-2 text-green-400 border-b border-green-600">
           <span className="text-green-300">$</span> initialize-docs-chat
         </div>
-
         <div className="px-4 py-4 text-sm">
           <p className="text-gray-400">Loading documentation parser module...</p>
 
