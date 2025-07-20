@@ -13,7 +13,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-black text-green-400 font-mono flex flex-col items-center justify-center">
-      <div className="flex justify-center w-full overflow-x-auto">
+      <div className="flex justify-center w-full ">
   <pre className="min-w-max mx-auto text-green-300 text-xs sm:text-base md:text-3xl lg:text-4xl leading-none whitespace-pre">
 {`
 ██████╗  ██████╗  ██████╗███████╗     █████╗ ██╗
