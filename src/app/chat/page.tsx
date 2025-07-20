@@ -53,12 +53,12 @@ function ChatContent() {
   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState("");
   const searchParams = useSearchParams();
-  const sitemapurl = searchParams.get("sitemapurl") || "https://react.dev/sitemap.xml";
+  const sitemapurl = searchParams.get("sitemapurl") || "https://nextjs.org/sitemap.xml";
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "system",
       content: [
-        "[SYSTEM] Documentation successfully parsed from https://react.dev",
+        `[SYSTEM] Documentation successfully parsed from ${sitemapurl}`,
         "[STATUS] Ready for queries",
         "[INFO] You can now ask questions about the documentation",
       ].join("\n"),

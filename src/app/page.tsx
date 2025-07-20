@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function Home() {
-  const [url, setUrl] = useState("https://react.dev");
+  const [url, setUrl] = useState("https://nextjs.org/sitemap.xml");
   const router = useRouter();
 
   const handleNavigate = () => {
