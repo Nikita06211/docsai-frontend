@@ -1,33 +1,41 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useKindeAuth } from '@kinde-oss/kinde-auth-nextjs';
+import AuthButtons from './components/AuthForm'; // Adjust path
 
 export default function Home() {
-  const [url, setUrl] = useState("https://nextjs.org/sitemap.xml");
+  const [url, setUrl] = useState('https://nextjs.org/sitemap.xml');
   const router = useRouter();
+  const { isAuthenticated, isLoading } = useKindeAuth(); // Kinde auth hook
 
   const handleNavigate = () => {
+    if (!isAuthenticated) {
+      router.push('/');
+      return;
+    }
     router.push(`/chat?sitemapurl=${encodeURIComponent(url)}`);
   };
 
   return (
     <main className="min-h-screen bg-black text-green-400 font-mono flex flex-col items-center justify-center">
       <div className="flex justify-center w-full ">
-  <pre className="min-w-max mx-auto text-green-300 text-xs sm:text-base md:text-3xl lg:text-4xl leading-none whitespace-pre">
-{`
+        <pre className="min-w-max mx-auto text-green-300 text-xs sm:text-base md:text-3xl lg:text-4xl leading-none whitespace-pre">
+          {`
 ██████╗  ██████╗  ██████╗███████╗     █████╗ ██╗
-██╔══██╗██╔═══██╗██╔════╝██╔════╝    ██╔══██╗██║
-██║  ██║██║   ██║██║     ███████╗    ███████║██║
-██║  ██║██║   ██║██║     ╚════██║    ██╔══██║██║
-██████╔╝╚██████╔╝╚██████╗███████║    ██║  ██║██║
-╚═════╝  ╚═════╝  ╚═════╝╚══════╝    ╚═╝  ╚═╝╚═╝
+██╔══██╗██╔═══██╗██╔════╝██╔════╝     ██╔══██╗██║
+██║  ██║██║   ██║██║     ███████╗     ███████║██║
+██║  ██║██║   ██║██║     ╚════██║     ██╔══██║██║
+██████╔╝╚██████╔╝╚██████╗███████║     ██║  ██║██║
+╚═════╝  ╚═════╝  ╚═════╝╚══════╝     ╚═╝  ╚═╝╚═╝
 `}
         </pre>
       </div>
 
       <p className="text-blue-400 text-lg mt-2">user@documentation-assistant</p>
       <p className="text-green-400 text-sm">$ ./chat-with-docs --interactive</p>
+      <AuthButtons />
 
       <div className="mt-8 w-full max-w-2xl mx-auto border border-green-500 rounded-md bg-[#0d0d0d]">
         <div className="px-4 py-2 text-green-400 border-b border-green-600">
@@ -35,7 +43,6 @@ export default function Home() {
         </div>
         <div className="px-4 py-4 text-sm">
           <p className="text-gray-400">Loading documentation parser module...</p>
-
           <div className="mt-4">
             <p className="text-green-400">
               <span className="text-gray-400">URL:</span> target_documentation_source
@@ -53,7 +60,7 @@ export default function Home() {
             className="mt-6 bg-green-600 text-black px-4 py-2 rounded hover:bg-green-500 text-sm"
           >
             🧠 ./execute --start-chat
-          </button>
+          </button> 
         </div>
       </div>
     </main>
