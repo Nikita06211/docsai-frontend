@@ -1,17 +1,17 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: 'export',
+  // Remove output: 'export' to enable SSR and API routes
   trailingSlash: true,
   images: {
-    unoptimized: true
+    unoptimized: true, // opt out of Next.js Image optimization
   },
   eslint: {
-    ignoreDuringBuilds: true, // This will skip ESLint during build
+    ignoreDuringBuilds: true,
   },
   typescript: {
-    ignoreBuildErrors: false, // Keep TypeScript checking
-  }
+    ignoreBuildErrors: false,
+  },
 };
 
 export default nextConfig;
