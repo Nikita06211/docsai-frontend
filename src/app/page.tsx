@@ -56,6 +56,7 @@ export default function Home() {
           </div>
 
           <button
+            disabled={isLoading || !isAuthenticated}
             onClick={handleNavigate}
             className="mt-6 bg-green-600 text-black px-4 py-2 rounded hover:bg-green-500 text-sm"
           >
