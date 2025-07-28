@@ -9,6 +9,8 @@ export default function Home() {
   const [url, setUrl] = useState('https://nextjs.org/sitemap.xml');
   const router = useRouter();
   const { isAuthenticated, isLoading } = useKindeAuth(); // Kinde auth hook
+  console.log('isLoading', isLoading, 'isAuthenticated', isAuthenticated);
+
 
   const handleNavigate = () => {
     if (!isAuthenticated) {
