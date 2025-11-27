@@ -25,8 +25,8 @@ function ChatLoading() {
     <main className="min-h-screen bg-black text-green-400 font-mono">
       <div className="w-full max-w-6xl mx-auto px-2 sm:px-4 py-3 sm:py-6">
         <div className="text-center mb-4 sm:mb-6 md:mb-8">
-          <div className="flex justify-center w-full overflow-hidden">
-            <pre className="text-green-300 text-[8px] sm:text-xs md:text-lg lg:text-xl leading-none whitespace-pre max-w-full">
+          <div className="flex justify-center w-full overflow-hidden px-2">
+            <pre className="text-green-300 text-[8px] sm:text-xs md:text-lg lg:text-xl leading-none whitespace-pre w-full text-center">
 {`
 ██████╗  ██████╗  ██████╗███████╗     █████╗ ██╗
 ██╔══██╗██╔═══██╗██╔════╝██╔════╝    ██╔══██╗██║
@@ -107,8 +107,8 @@ function ChatContent() {
     <main className="min-h-screen bg-black text-green-400 font-mono">
       <div className="w-full max-w-6xl mx-auto px-2 sm:px-4 py-3 sm:py-6">
         <div className="text-center mb-4 sm:mb-6 md:mb-8">
-          <div className="flex justify-center w-full overflow-hidden">
-            <pre className="text-green-300 text-[8px] sm:text-xs md:text-lg lg:text-xl leading-none whitespace-pre max-w-full">
+          <div className="flex justify-center w-full overflow-hidden px-2">
+            <pre className="text-green-300 text-[8px] sm:text-xs md:text-lg lg:text-xl leading-none whitespace-pre w-full text-center">
 {`
 ██████╗  ██████╗  ██████╗███████╗     █████╗ ██╗
 ██╔══██╗██╔═══██╗██╔════╝██╔════╝    ██╔══██╗██║
