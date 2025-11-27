@@ -22,10 +22,11 @@ interface Message {
 // Loading component for Suspense fallback
 function ChatLoading() {
   return (
-    <main className="min-h-screen bg-black text-green-400 font-mono flex flex-col items-center justify-center">
-      <div className="text-center mb-4 sm:mb-6">
-        <div className="flex justify-center w-full">
-  <pre className="min-w-max text-green-300 text-xs sm:text-base md:text-3xl lg:text-4xl leading-none whitespace-pre">
+    <main className="min-h-screen bg-black text-green-400 font-mono">
+      <div className="w-full max-w-6xl mx-auto px-2 sm:px-4 py-3 sm:py-6">
+        <div className="text-center mb-4 sm:mb-6 md:mb-8">
+          <div className="flex justify-center w-full overflow-hidden">
+            <pre className="text-green-300 text-[8px] sm:text-xs md:text-lg lg:text-xl leading-none whitespace-pre max-w-full">
 {`
 ██████╗  ██████╗  ██████╗███████╗     █████╗ ██╗
 ██╔══██╗██╔═══██╗██╔════╝██╔════╝    ██╔══██╗██║
@@ -34,14 +35,15 @@ function ChatLoading() {
 ██████╔╝╚██████╔╝╚██████╗███████║    ██║  ██║██║
 ╚═════╝  ╚═════╝  ╚═════╝╚══════╝    ╚═╝  ╚═╝╚═╝
 `}
-          </pre>
+            </pre>
+          </div>
+          <p className="text-blue-400 text-xs sm:text-base mt-1 sm:mt-2">user@documentation-assistant</p>
+          <p className="text-green-500 text-[10px] sm:text-xs md:text-sm mt-0.5 sm:mt-1">$ ./chat-with-docs --loading...</p>
         </div>
-        <p className="text-blue-400 text-xs sm:text-base">user@documentation-assistant</p>
-        <p className="text-green-500 text-xs sm:text-sm">$ ./chat-with-docs --loading...</p>
-      </div>
-      <div className="w-full max-w-4xl border-2 sm:border-4 border-green-300 rounded-md bg-[#0d0d0d]">
-        <div className="flex justify-center items-center p-6 sm:p-8">
-          <div className="animate-pulse text-green-400 text-sm sm:text-base">Initializing chat session...</div>
+        <div className="bg-[#0d0d0d] rounded-lg p-4 sm:p-6 md:p-8">
+          <div className="flex justify-center items-center">
+            <div className="animate-pulse text-green-400 text-xs sm:text-sm">Initializing chat session...</div>
+          </div>
         </div>
       </div>
     </main>
@@ -102,10 +104,11 @@ function ChatContent() {
   };
 
   return (
-    <main className="min-h-screen bg-black text-green-400 font-mono flex flex-col items-center justify-center">
-      <div className="text-center mb-4 sm:mb-6">
-        <div className="flex justify-center w-full">
-  <pre className="min-w-max text-green-300 text-xs sm:text-base md:text-3xl lg:text-4xl leading-none whitespace-pre">
+    <main className="min-h-screen bg-black text-green-400 font-mono">
+      <div className="w-full max-w-6xl mx-auto px-2 sm:px-4 py-3 sm:py-6">
+        <div className="text-center mb-4 sm:mb-6 md:mb-8">
+          <div className="flex justify-center w-full overflow-hidden">
+            <pre className="text-green-300 text-[8px] sm:text-xs md:text-lg lg:text-xl leading-none whitespace-pre max-w-full">
 {`
 ██████╗  ██████╗  ██████╗███████╗     █████╗ ██╗
 ██╔══██╗██╔═══██╗██╔════╝██╔════╝    ██╔══██╗██║
@@ -114,78 +117,77 @@ function ChatContent() {
 ██████╔╝╚██████╔╝╚██████╗███████║    ██║  ██║██║
 ╚═════╝  ╚═════╝  ╚═════╝╚══════╝    ╚═╝  ╚═╝╚═╝
 `}
-          </pre>
-        </div>
-        <p className="text-blue-400 text-xs sm:text-base">user@documentation-assistant</p>
-        <p className="text-green-500 text-xs sm:text-sm">$ ./chat-with-docs --interactive</p>
-      </div>
-
-      <div className="w-full max-w-4xl border border-green-300  sm:border-4 rounded-md bg-[#0d0d0d]">
-        <div className="flex flex-row gap-2 bg-[#090c14] border-b border-green-300 p-4 sm:p-6">
-          <span className="text-green-400 text-xs sm:text-base">
-            {`>_ `}docs<span className="text-cyan-400">@chat-session</span>
-          </span>
+            </pre>
+          </div>
+          <p className="text-blue-400 text-xs sm:text-base mt-1 sm:mt-2">user@documentation-assistant</p>
+          <p className="text-green-500 text-[10px] sm:text-xs md:text-sm mt-0.5 sm:mt-1">$ ./chat-with-docs --interactive</p>
         </div>
 
-        <div className="space-y-3 sm:space-y-4 max-h-[50vh] sm:max-h-[60vh] overflow-y-auto scroll-smooth pr-1 sm:pr-2 scrollbar-thin scrollbar-thumb-cyan-600 scrollbar-track-transparent scrollbar-thumb-rounded-full">
-          {messages.map((msg, index) => (
-            <div key={index} className="text-xs sm:text-sm">
-              {msg.role === "system" ? (
-                <div className="bg-[#0f0f0f] inline-block m-1 p-2 sm:p-3 border-l-2 sm:border-l-4 border-green-500 rounded">
-                  <p className="text-green-400 font-semibold text-xs sm:text-sm">
-                    docs-ai<span className="text-gray-400">@system</span>
-                  </p>
-                  <MessageBubble
-                    role="system"
-                    content={msg.content}
-                    sources={msg.sources}
-                  />
-                  <p className="text-gray-500 text-[10px] sm:text-xs mt-0.5 sm:mt-1">{msg.time}</p>
-                </div>
-              ) : (
-                <div className="text-right">
-                  <div className="bg-[#0f0f0f] inline-block p-2 sm:p-3 border-r-2 sm:border-r-4 border-blue-400 rounded">
-                    <p className="text-white font-semibold text-xs sm:text-sm">
-                      you<span className="text-gray-400">@user</span>
+        <div className="mb-4 sm:mb-6">
+          <div className="flex flex-row gap-2 bg-[#090c14] border-b border-green-300/30 px-3 sm:px-6 py-2 sm:py-4 rounded-t-lg">
+            <span className="text-green-400 text-xs sm:text-sm">
+              {`>_ `}docs<span className="text-cyan-400">@chat-session</span>
+            </span>
+          </div>
+
+          <div className="space-y-3 sm:space-y-4 px-2 sm:px-4 md:px-6 py-3 sm:py-4 md:py-6 bg-[#0d0d0d]">
+            {messages.map((msg, index) => (
+              <div key={index} className="text-xs sm:text-sm">
+                {msg.role === "system" ? (
+                  <div className="bg-[#0f0f0f] w-full sm:inline-block p-2 sm:p-3 md:p-4 border-l-2 border-green-500/60 rounded-r-md">
+                    <p className="text-green-400 font-semibold text-xs sm:text-sm mb-1 sm:mb-2">
+                      docs-ai<span className="text-gray-400">@system</span>
                     </p>
-                    <MessageBubble role="user" content={msg.content} />
-                    <p className="text-gray-400 text-[10px] sm:text-xs mt-0.5 sm:mt-1">{msg.time}</p>
+                    <MessageBubble
+                      role="system"
+                      content={msg.content}
+                      sources={msg.sources}
+                    />
+                    <p className="text-gray-500 text-[10px] sm:text-xs mt-1 sm:mt-2">{msg.time}</p>
                   </div>
-                </div>
-              )}
-            </div>
-          ))}
+                ) : (
+                  <div className="text-right">
+                    <div className="bg-[#0f0f0f] w-full sm:inline-block p-2 sm:p-3 md:p-4 border-r-2 border-blue-400/60 rounded-l-md">
+                      <p className="text-white font-semibold text-xs sm:text-sm mb-1 sm:mb-2">
+                        you<span className="text-gray-400">@user</span>
+                      </p>
+                      <MessageBubble role="user" content={msg.content} />
+                      <p className="text-gray-400 text-[10px] sm:text-xs mt-1 sm:mt-2">{msg.time}</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
 
-          {loading && (
-            <div className="flex items-center justify-between font-mono py-1 sm:py-2 w-full text-green-300 text-xs sm:text-md">
-              <span className="text-green-300">{`>_ `} [PROCESSING] Analyzing Documentation</span>
-              <span className="text-green-300 animate-pulse font-extrabold mr-1 sm:mr-2">|||</span>
+            {loading && (
+              <div className="flex items-center justify-between font-mono py-2 sm:py-3 w-full text-green-300 text-xs sm:text-sm">
+                <span className="text-green-300 truncate pr-2">{`>_ `} [PROCESSING] Analyzing Documentation</span>
+                <span className="text-green-300 animate-pulse font-extrabold flex-shrink-0">|||</span>
+              </div>
+            )}
+          </div>
+
+          <div className="border-t border-green-300/30 bg-[#101725] p-2 sm:p-4 md:p-6 rounded-b-lg">
+            <div className="flex flex-row items-center gap-1.5 sm:gap-2 md:gap-3 border border-green-400/40 rounded-lg py-2 sm:py-3 px-2 sm:px-3 md:px-4 bg-[#0d1117] w-full transition-all hover:border-green-400/60 focus-within:border-green-400/80">
+              <span className="text-cyan-400 font-mono whitespace-nowrap text-[10px] sm:text-xs md:text-sm flex-shrink-0">user@docs $</span>
+              <input
+                type="text"
+                placeholder="Enter your query here..."
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleSend()}
+                className="bg-transparent focus:outline-none text-gray-300 w-full font-mono text-xs sm:text-sm px-1 sm:px-2 placeholder:text-gray-600"
+              />
+              <button
+                onClick={handleSend}
+                className="text-green-500 hover:text-green-300 transition-colors ml-1 sm:ml-2 flex-shrink-0 touch-manipulation"
+                aria-label="Send"
+              >
+                <SendHorizonal size={16} className="sm:w-5 sm:h-5" />
+              </button>
             </div>
-          )}
+          </div>
         </div>
-
-      <div className="border-t border-green-300 bg-[#101725] p-3 sm:py-5">
-  <div className="flex flex-row items-center gap-2 border border-green-400 rounded-xl py-2 sm:py-3 bg-[#0d1117] w-full text-xs sm:text-sm">
-    <span className="text-cyan-400 font-mono whitespace-nowrap text-xs sm:text-sm ml-2">user@docs $</span>
-    <input
-      type="text"
-      placeholder="Enter your query here..."
-      value={input}
-      onChange={(e) => setInput(e.target.value)}
-      onKeyDown={(e) => e.key === "Enter" && handleSend()}
-      className="bg-transparent focus:outline-none text-gray-400 w-full font-mono text-xs sm:text-base px-2"
-    />
-    <button
-      onClick={handleSend}
-      className="text-green-500 hover:text-green-300 ml-2 mr-2"
-      aria-label="Send"
-    >
-      <SendHorizonal size={18} />
-    </button>
-  </div>
-</div>
-
-
       </div>
     </main>
   );
